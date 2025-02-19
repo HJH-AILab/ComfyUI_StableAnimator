@@ -10,3 +10,8 @@ StableAnimator的comfyUI自定义节点.
 1. 拉取本项目到 ComfyUI/custom_nodes
 2. 拉取StableAnimator到 ComfyUI/custom_nodes/ComfyUI_StableAnimator/StableAnimator
 3. 按照StableAnimator项目README步骤安装依赖 参考:https://github.com/Francis-Rings/StableAnimator
+
+# Reward
+Out team's reward code:
+
+
