@@ -15,3 +15,4 @@ StableAnimator的comfyUI自定义节点.
 Out team's reward code:
 
 ![Image](images/20250219-203952.png)
+<img src="images/20250219-203952.png" alt="Out team's reward code" width="300">
