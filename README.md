@@ -14,4 +14,4 @@ StableAnimator的comfyUI自定义节点.
 # Reward
 Out team's reward code:
 
-![Image](images/20250219-203952.png =600x600)
+![Image](images/20250219-203952.png)
