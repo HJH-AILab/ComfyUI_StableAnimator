@@ -1,0 +1,14 @@
+[project]
+name = "stableanimator"
+description = "ComfyUI nodes for StableAnimator"
+version = "1.0.0"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/HJH-AILab/ComfyUI_StableAnimator"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = ""
+DisplayName = "ComfyUI_StableAnimator"
+Icon = ""
