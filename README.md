@@ -1,3 +1,5 @@
+English | [中文版](https://github.com/HJH-AILab/ComfyUI_StableAnimator/edit/main/README.md) 
+
 # ComfyUI_StableAnimator
 
 [ComfyUI](https://github.com/comfyanonymous/ComfyUI) reference implementation for [StableAnimator](https://github.com/Francis-Rings/StableAnimator).
