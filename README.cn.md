@@ -1,3 +1,5 @@
+[English](https://github.com/HJH-AILab/ComfyUI_StableAnimator) | 中文版
+
 # ComfyUI_StableAnimator
 StableAnimator 的 ComfyUI 自定义节点.
 原项目请访问 https://github.com/Francis-Rings/StableAnimator
