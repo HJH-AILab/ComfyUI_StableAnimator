@@ -9,6 +9,11 @@ The original project can be found at https://github.com/Francis-Rings/StableAnim
 2. under development...
 
 ## Installation
+
+```bash
+comfy node registry-install stableanimator
+```
+
 1. pull this project to ComfyUI/custom_nodes
 2. pull StableAnimator to ComfyUI/custom_nodes/ComfyUI_StableAnimator/StableAnimator
 3. Follow the StableAnimator project README steps to install the dependency Reference:https://github.com/Francis-Rings/StableAnimator
