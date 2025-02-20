@@ -6,6 +6,7 @@ import cv2
 
 from PIL import ImageOps, Image
 
+
 def pil_to_tensor(image_pil):
     i = ImageOps.exif_transpose(image_pil)
     image = i.convert("RGB")
@@ -30,25 +31,39 @@ def np_to_tensor(image_np):
     image_tensor = torch.from_numpy(image)[None,]
     return image_tensor
 
-def load_images_from_folder(folder, width, height):
+# def load_images_from_folder(folder, width, height):
+#         """从目录读取图片"""
+#         images = []
+#         files = os.listdir(folder)
+#         png_files = [f for f in files if f.endswith('.png')]
+#         png_files.sort(key=lambda x: int(x.split('_')[1].split('.')[0]))
+#         for filename in png_files:
+#             img = Image.open(os.path.join(folder, filename)).convert('RGB')
+#             img = img.resize((width, height))
+#             images.append(img)
+
+#         return images
+
+def load_images_from_folder(folder, ):
         """从目录读取图片"""
         images = []
         files = os.listdir(folder)
         png_files = [f for f in files if f.endswith('.png')]
-        png_files.sort(key=lambda x: int(x.split('_')[1].split('.')[0]))
+        # png_files.sort(key=lambda x: int(x.split('_')[1].split('.')[0]))
         for filename in png_files:
             img = Image.open(os.path.join(folder, filename)).convert('RGB')
-            img = img.resize((width, height))
-            images.append(img)
+            # img = img.resize((width, height))
+            images.append(pil_to_tensor(img))
 
-        return images
+        return torch.cat(images, dim=0)
 
-def save_frames_as_mp4(frames, output_mp4_path, fps):
-    print("Starting saving the frames as mp4")
-    height, width, _ = frames[0].shape
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # 'H264' for better quality
-    out = cv2.VideoWriter(output_mp4_path, fourcc, float(fps), (width, height))
-    for frame in frames:
-       frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-       out.write(frame_bgr)
-    out.release()
+# def save_frames_as_mp4(frames, output_mp4_path, fps):
+#     print("Starting saving the frames as mp4")
+#     height, width, _ = frames[0].shape
+#     # fourcc = cv2.VideoWriter_fourcc(*'mp4v')  # 'H264' for better quality
+#     fourcc = cv2.VideoWriter_fourcc(*'avc1')
+#     out = cv2.VideoWriter(output_mp4_path, fourcc, float(fps), (width, height))
+#     for frame in frames:
+#        frame_bgr = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+#        out.write(frame_bgr)
+#     out.release()

@@ -1,7 +1,6 @@
 import os
 import torch
 import numpy as np
-import time
 
 from diffusers.models.attention_processor import XFormersAttnProcessor
 from transformers import CLIPImageProcessor, CLIPVisionModelWithProjection
@@ -18,7 +17,12 @@ from .StableAnimator.animation.modules.pose_net import PoseNet
 from .StableAnimator.animation.modules.unet import UNetSpatioTemporalConditionModel
 from .StableAnimator.animation.pipelines.inference_pipeline_animation import InferenceAnimationPipeline
 
-from .utils.image_utils import tensor_to_pil, tensor_to_np, np_to_tensor, load_images_from_folder, save_frames_as_mp4
+from .utils.image_utils import tensor_to_pil, tensor_to_np, np_to_tensor, load_images_from_folder
+
+
+# from .StableAnimator.DWPose.dwpose_utils.dwpose_detector import dwpose_detector_aligned
+from .utils.dwpose.dwpose_detector import DWposeDetectorAligned # 这里重写StableAnimator.DWPose.dwpose_utils.dwpose_detector.dwpose_detector_aligned 函数，以适应ComfyUI的模型加载机制
+from .utils.dwpose.skeleton_extraction import draw_pose
 
 GLOBAL_CATEGORY = "HJH_StableAnimatorNode🪅"
 
@@ -189,7 +193,8 @@ class StableAnimatorNode:
             "required": {
                 "stable_animator_models":("STABLEANIMATORMODELS",),
                 "reference_image": ("IMAGE",),
-                "pose_images_dir": ("STRING",{"default":"",}),  # 输入为图像序列文件夹路径
+                # "pose_images_dir": ("STRING",{"default":"",}),  # 输入为图像序列文件夹路径
+                "pose_images": ("IMAGE",),
                 "format":(["512x512","576x1024"],{}),
                 "tile_size":("INT",{"default":16,"min":16,"max":64,"step":16}),
                 "frames_overlap":("INT",{"default":4,"min":4,"max":64,"step":4}),
@@ -231,8 +236,8 @@ class StableAnimatorNode:
     FUNCTION = "generate"
     CATEGORY = GLOBAL_CATEGORY
 
-    RETURN_TYPES = ("STRING",)
-    RETURN_NAMES = ("video_path",)
+    RETURN_TYPES = ("IMAGE",)
+    RETURN_NAMES = ("video_frames",)
     # OUTPUT_IS_LIST = (True,)
 
     def generate(self, **kwargs):
@@ -244,8 +249,13 @@ class StableAnimatorNode:
         models = kwargs["stable_animator_models"]
         reference_image = tensor_to_pil(kwargs["reference_image"])
         reference_image_np = tensor_to_np(kwargs["reference_image"])
-        pose_images_dir = kwargs["pose_images_dir"]
-        pose_images =  load_images_from_folder(pose_images_dir, width=width, height=height)
+        # pose_images_dir = kwargs["pose_images_dir"]
+        # pose_images =  load_images_from_folder(pose_images_dir, width=width, height=height)
+        tensor_pose_images = kwargs["pose_images"]
+        pose_images = []
+        for pose_image in tensor_pose_images:
+            pose_images.append(tensor_to_pil(pose_image.unsqueeze(0)).resize((width,height)))
+        
         seed = kwargs["seed"] if kwargs["seed"] != -1 else torch.randint(0, 2**32-1, (1,)).item()
         generator = torch.Generator(device=self.device).manual_seed(seed)
         num_frames = len(pose_images)
@@ -293,7 +303,7 @@ class StableAnimatorNode:
             tile_overlap=kwargs["frames_overlap"],
             decode_chunk_size=kwargs["decode_chunk_size"],
             motion_bucket_id=127.,
-            fps=7,
+            fps=kwargs["fps"],
             min_guidance_scale=kwargs["guidance_scale"],
             max_guidance_scale=kwargs["guidance_scale"],
             noise_aug_strength=kwargs["noise_aug_strength"],
@@ -305,28 +315,141 @@ class StableAnimatorNode:
 
         # 转换为张量输出
         output_tensors = []
-        np_frames=np.array(video_frames)
-        print("********************")
-        print(np_frames.shape)
-        print(np_frames[0].shape)
-        # for frame in video_frames:
-        #     np_frames = np.array(frame)
-            # output_tensors.append(np_to_tensor(np.array(frame)))
+        for frame in video_frames:
+            output_tensors.append(np_to_tensor(np.array(frame)))
 
-        output_root = folder_paths.get_output_directory()
-        output_dir = os.path.join(output_root, "stable_animator_output")
-        os.makedirs(output_dir, exist_ok=True)
-        output_file = os.path.join(output_dir, f"{time.time()}.mp4")
-        save_frames_as_mp4(np_frames, output_file, fps=kwargs["fps"])
-        return (output_file,)
-        # return (output_tensors,)
+        return torch.cat(output_tensors, dim=0),
+
+
+class StableAnimatorDWPoseDetectorAlignedModels:
+    """
+    StableAnimator加载DWPose模型,
+    """
+    def __init__(self):
+        pass
+    @classmethod
+    def INPUT_TYPES(cls):
+        """定义输入参数"""
+        return {
+            "required": {
+            },
+        }
+
+    FUNCTION = "load"
+    CATEGORY = GLOBAL_CATEGORY
+    RETURN_TYPES = ("DWPOSEDETECTORALIGNED",)
+    RETURN_NAMES = ("dwpose_detector_aligned",)
+
+    def load(self, ):
+        """执行模型加载"""
+        return DWposeDetectorAligned(),
+
+class StableAnimatorSkeletonNode:
+    """
+    StableAnimator生成视频POSE骨架
+    """
+    def __init__(self):
+        pass
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        """定义输入参数"""
+        return {
+            "required": {
+                "dwpose_detector_aligned":("DWPOSEDETECTORALIGNED",),
+                "reference_image":("IMAGE",),
+                "video_frames":("IMAGE",),
+            },
+        }
+
+    FUNCTION = "extraction"
+    CATEGORY = GLOBAL_CATEGORY
+
+    RETURN_TYPES = ("IMAGE",)
+    RETURN_NAMES = ("pose_frames",)
+
+    def extraction(self, **kwargs):
+        '''
+        以下代码参考 StableAnimator.DWPose.dwpose_utils.dwpose_detector.get_video_pose, 以适应ComfyUI的参数输入
+        '''
+        dwpose_detector_aligned = kwargs["dwpose_detector_aligned"]
+        ref_image = tensor_to_np(kwargs["reference_image"])
+        height, width, _ = ref_image.shape
+        ref_pose = dwpose_detector_aligned(ref_image)
+        ref_keypoint_id = [0, 1, 2, 5, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+        ref_keypoint_id = [i for i in ref_keypoint_id \
+            if len(ref_pose['bodies']['subset']) > 0 and ref_pose['bodies']['subset'][0][i] >= .0]
+        ref_body = ref_pose['bodies']['candidate'][ref_keypoint_id]
+
+        video_frames = kwargs["video_frames"]
+
+        detected_poses = []
+        for video_frame in video_frames:
+            frame = tensor_to_np(video_frame.unsqueeze(0))
+            pose = dwpose_detector_aligned(frame)
+            detected_poses.append(pose)
+        
+        detected_bodies = np.stack([p['bodies']['candidate'] for p in detected_poses if p['bodies']['candidate'].shape[0] == 18])[:,ref_keypoint_id]
+        ay, by = np.polyfit(detected_bodies[:, :, 1].flatten(), np.tile(ref_body[:, 1], len(detected_bodies)), 1)
+        fh = height
+        fw = width
+        ax = ay / (fh / fw / height * width)
+        bx = np.mean(np.tile(ref_body[:, 0], len(detected_bodies)) - detected_bodies[:, :, 0].flatten() * ax)
+        a = np.array([ax, ay])
+        b = np.array([bx, by])
+        
+        output_pose = []
+        for detected_pose in detected_poses:
+            detected_pose['bodies']['candidate'] = detected_pose['bodies']['candidate'] * a + b
+            detected_pose['faces'] = detected_pose['faces'] * a + b
+            detected_pose['hands'] = detected_pose['hands'] * a + b
+            im = draw_pose(detected_pose, height, width)
+            output_pose.append(np_to_tensor(np.array(im)))
+        
+        output = torch.cat(output_pose, dim=0)
+        return output,
+
+class StableAnimatorLoadFramesFromFolderNode:
+    """
+    StableAnimator从文件夹加载帧
+    """
+    def __init__(self):
+        pass
+
+    @classmethod
+    def INPUT_TYPES(cls):
+        """定义输入参数"""
+        return {
+            "required": {
+                "pose_images_folder": ("STRING",{"default":"",}),  # 输入为图像序列文件夹路径
+            },
+        }
+
+    FUNCTION = "load"
+    CATEGORY = GLOBAL_CATEGORY
+
+    RETURN_TYPES = ("IMAGE",)
+    RETURN_NAMES = ("frames",)
+
+    def load(self, **kwargs):
+        frames = []
+        folder = kwargs["pose_images_folder"]
+        frames =  load_images_from_folder(folder,)
+
+        return frames,  
 
 NODE_CLASS_MAPPINGS = {
     "StableAnimatorNode": StableAnimatorNode,
-    "StableAnimatorModels": StableAnimatorModels
+    "StableAnimatorModels": StableAnimatorModels,
+    "StableAnimatorSkeletonNode": StableAnimatorSkeletonNode,
+    "StableAnimatorDWPoseDetectorAlignedModels": StableAnimatorDWPoseDetectorAlignedModels,
+    "StableAnimatorLoadFramesFromFolderNode": StableAnimatorLoadFramesFromFolderNode,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "StableAnimatorNode": "HJH-StableAnimator - Video Generation",
-    "StableAnimatorModels":"HJH-StableAnimator - Load Models"
+    "StableAnimatorModels":"HJH-StableAnimator - Load Models",
+    "StableAnimatorSkeletonNode": "HJH-StableAnimator - Pose Extraction",
+    "StableAnimatorDWPoseDetectorAlignedModels": "HJH-StableAnimator - Load DWPose Models",
+    "StableAnimatorLoadFramesFromFolderNode": "HJH-StableAnimator - Load Pose Frames From Folder",
 }
