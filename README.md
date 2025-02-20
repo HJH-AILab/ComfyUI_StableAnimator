@@ -3,7 +3,7 @@
 [ComfyUI](https://github.com/comfyanonymous/ComfyUI) reference implementation for [StableAnimator](https://github.com/Francis-Rings/StableAnimator).
 The original project can be found at https://github.com/Francis-Rings/StableAnimator
 
-# ComfyUI_StableAnimator
+## Important updates
 1. Independent model loading node, compliant with comfyui cache mechanism.
 2. under development...
 
