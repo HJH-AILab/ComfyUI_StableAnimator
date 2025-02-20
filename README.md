@@ -1,17 +1,17 @@
 # ComfyUI_StableAnimator
-StableAnimator的comfyUI自定义节点.
-原项目请访问 https://github.com/Francis-Rings/StableAnimator
+StableAnimator for comfyUI custom nodes.
+The original project can be found at https://github.com/Francis-Rings/StableAnimator
 
-# 功能
-1. 独立了模型加载节点, 符合comfyui缓存机制
-2. 开发中...
+# ComfyUI_StableAnimator
+1. Independent model loading node, compliant with comfyui cache mechanism.
+2. under development...
 
-# 安装
-1. 拉取本项目到 ComfyUI/custom_nodes
-2. 拉取StableAnimator到 ComfyUI/custom_nodes/ComfyUI_StableAnimator/StableAnimator
-3. 按照StableAnimator项目README步骤安装依赖 参考:https://github.com/Francis-Rings/StableAnimator
+# Installation
+1. pull this project to ComfyUI/custom_nodes
+2. pull StableAnimator to ComfyUI/custom_nodes/ComfyUI_StableAnimator/StableAnimator
+3. Follow the StableAnimator project README steps to install the dependency Reference:https://github.com/Francis-Rings/StableAnimator
 
 # Reward
-Out team's reward code:
+Out team's reward code.
 
-<img src="images/20250219-203952.png" alt="Out team's reward code" width="300">
+<img src=“images/20250219-203952.png” alt=“Out team's reward code” width=“300”>
