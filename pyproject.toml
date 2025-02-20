@@ -1,7 +1,7 @@
 [project]
 name = "stableanimator"
 description = "ComfyUI nodes for StableAnimator"
-version = "1.0.0"
+version = "0.0.1"
 license = {file = "LICENSE"}
 
 [project.urls]
