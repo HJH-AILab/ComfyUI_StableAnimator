@@ -14,4 +14,4 @@ The original project can be found at https://github.com/Francis-Rings/StableAnim
 # Reward
 Out team's reward code.
 
-<img src=“images/20250219-203952.png” alt=“Out team's reward code” width=“300”>
+<img src="images/20250219-203952.png" alt="Out team's reward code" width="300">
