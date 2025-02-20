@@ -1,5 +1,6 @@
 # ComfyUI_StableAnimator
-StableAnimator for comfyUI custom nodes.
+
+StableAnimator for ComfyUI custom nodes.
 The original project can be found at https://github.com/Francis-Rings/StableAnimator
 
 # ComfyUI_StableAnimator
