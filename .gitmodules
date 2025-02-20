@@ -1,0 +1,3 @@
+[submodule "StableAnimator"]
+	path = StableAnimator
+	url = https://github.com/Francis-Rings/StableAnimator
