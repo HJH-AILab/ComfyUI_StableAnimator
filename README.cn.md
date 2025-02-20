@@ -4,7 +4,15 @@ StableAnimator 的 ComfyUI 自定义节点.
 
 # 功能
 1. 独立了模型加载节点, 符合 comfyui 缓存机制
-2. 开发中...
+2. 制作了StableAnimator的从视频帧导出骨骼图节点, 你也可以使用comfyui_controlnet_aux的DWPose Estimator来生成骨骼图
+3. 制作了从目录读取骨骼图的节点.
+4. 现在节点已经可以正常使用了.
+5. 在根目录下预设了StableAnimator目录,并且增加了__init__.py文件,!!不要移除, 以保证子包正确引用.
+6. 工作流示例稍后提供...
+
+# 建议
+1. 建议使用ComfyUI-VideoHelperSuite来导出是视频帧和合成视频, 参考:https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
+2. 建议在个人设备(显存较小的设备)上, 分别运行导出骨骼图和生成动作视频的流程.
 
 # 安装
 1. 拉取本项目到 ComfyUI/custom_nodes
