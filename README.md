@@ -4,7 +4,8 @@
 The original project can be found at https://github.com/Francis-Rings/StableAnimator
 
 ## Important updates
-1. Independent model loading node, compliant with comfyui cache mechanism.
+
+1. **2025/02/18** Independent model loading node, compliant with comfyui cache mechanism.
 2. under development...
 
 ## Installation
