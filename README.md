@@ -1,6 +1,6 @@
 # ComfyUI_StableAnimator
 
-[StableAnimator](https://github.com/Francis-Rings/StableAnimator) for [ComfyUI](https://github.com/comfyanonymous/ComfyUI) custom nodes.
+[ComfyUI](https://github.com/comfyanonymous/ComfyUI) reference implementation for [StableAnimator](https://github.com/Francis-Rings/StableAnimator).
 The original project can be found at https://github.com/Francis-Rings/StableAnimator
 
 # ComfyUI_StableAnimator
