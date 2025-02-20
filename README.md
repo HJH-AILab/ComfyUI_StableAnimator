@@ -14,6 +14,6 @@ The original project can be found at https://github.com/Francis-Rings/StableAnim
 3. Follow the StableAnimator project README steps to install the dependency Reference:https://github.com/Francis-Rings/StableAnimator
 
 ## Reward
-Out team's reward code.
+Our team's reward code.
 
 <img src="images/20250219-203952.png" alt="Out team's reward code" width="300">
