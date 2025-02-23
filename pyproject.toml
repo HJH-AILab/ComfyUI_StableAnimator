@@ -1,5 +1,5 @@
 [project]
-name = "stableanimator"
+name = "HJH_StableAnimator"
 description = "ComfyUI nodes for StableAnimator"
 version = "0.0.2"
 license = {file = "LICENSE"}
