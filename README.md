@@ -23,6 +23,7 @@ Visit the original project at https://github.com/Francis-Rings/StableAnimator.
 3. Install the dependencies according to the steps in the README of the StableAnimator project. Refer to: https://github.com/Francis-Rings/StableAnimator.
 
 ## Models Local Folder
+```
 stable_animator
         /Animation
                 face_encoder.pth
@@ -34,7 +35,7 @@ stable_animator
                 genderage.onnx
                 glintr100.onnx
                 scrfd_10g_bnkps.onnx
-        /DWPose(使用Contrelnet的dw节点可以不放这个)
+        /DWPose(ControlNet DW PreProcessor nodes using Contrelnet can leave this out)
                 dw-ll_ucoco_384.onnx
                 yolox_l.onnx
         /stable-video-diffusion-img2vid-xt
@@ -57,8 +58,8 @@ stable_animator
                         config.json
                         diffusion_pytorch_model.fp16.safetensors
                         diffusion_pytorch_model.safetensors
-
-# Add stable_animator: your stable_animator model storage root directory entry to comfyui extra_model_paths.yam
+```
+Add stable_animator: your stable_animator model storage root directory entry to comfyui extra_model_paths.yam
 
 ## Reward
 Our team's reward code:
