@@ -9,7 +9,7 @@ StableAnimator 的 ComfyUI 自定义节点.
 2. 制作了StableAnimator的从视频帧导出骨骼图节点, 你也可以使用comfyui_controlnet_aux的DWPose Estimator来生成骨骼图
 3. 制作了从目录读取骨骼图的节点.
 4. 现在节点已经可以正常使用了.
-5. 在根目录下预设了StableAnimator目录,并且增加了`__init__.py`文件,!!不要移除, 以保证子包正确引用.
+5. 在根目录下预设了StableAnimator目录,并且增加了`__init__.py`文件, **不要移除** , 以保证子包正确引用.
 6. 工作流示例稍后提供...
 
 ## 建议
