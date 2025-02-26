@@ -2,3 +2,5 @@
 /models/*.bin
 /models/*.safetensors
 .directory
+
+.DS_Store
