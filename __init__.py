@@ -1,4 +1,5 @@
 import os
+import sys
 import torch
 import numpy as np
 
@@ -8,14 +9,17 @@ from diffusers import AutoencoderKLTemporalDecoder, EulerDiscreteScheduler
 
 import folder_paths
 
-from .StableAnimator.animation.modules.attention_processor import AnimationAttnProcessor
-from .StableAnimator.animation.modules.attention_processor_normalized import AnimationIDAttnNormalizedProcessor
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append( f"{ROOT_DIR}/StableAnimator")
+
+from StableAnimator.animation.modules.attention_processor import AnimationAttnProcessor
+from StableAnimator.animation.modules.attention_processor_normalized import AnimationIDAttnNormalizedProcessor
 # from .StableAnimator.animation.modules.face_model import FaceModel
 from .utils.face_model import FaceModel #这里重写StableAnimator.animation.modules.face_model.FaceModel 类，以适应ComfyUI的模型加载机制
-from .StableAnimator.animation.modules.id_encoder import FusionFaceId
-from .StableAnimator.animation.modules.pose_net import PoseNet
-from .StableAnimator.animation.modules.unet import UNetSpatioTemporalConditionModel
-from .StableAnimator.animation.pipelines.inference_pipeline_animation import InferenceAnimationPipeline
+from StableAnimator.animation.modules.id_encoder import FusionFaceId
+from StableAnimator.animation.modules.pose_net import PoseNet
+from StableAnimator.animation.modules.unet import UNetSpatioTemporalConditionModel
+from StableAnimator.animation.pipelines.inference_pipeline_animation import InferenceAnimationPipeline
 
 from .utils.image_utils import tensor_to_pil, tensor_to_np, np_to_tensor, load_images_from_folder
 
