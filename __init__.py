@@ -10,6 +10,7 @@ from diffusers import AutoencoderKLTemporalDecoder, EulerDiscreteScheduler
 import folder_paths
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(ROOT_DIR)
 sys.path.append( f"{ROOT_DIR}/StableAnimator")
 
 from StableAnimator.animation.modules.attention_processor import AnimationAttnProcessor
