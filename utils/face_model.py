@@ -22,4 +22,5 @@ class FaceModel(nn.Module):
             save_ext='png',
             device="cpu",
         )
+        
         self.face_helper.face_parse = init_parsing_model(model_name='bisenet', device="cpu")

@@ -1,8 +1,8 @@
 import numpy as np
 
 import onnxruntime as ort
-from StableAnimator.DWPose.dwpose_utils.onnxdet import inference_detector
-from StableAnimator.DWPose.dwpose_utils.onnxpose import inference_pose
+from ...StableAnimator.DWPose.dwpose_utils.onnxdet import inference_detector
+from ...StableAnimator.DWPose.dwpose_utils.onnxpose import inference_pose
 
 import folder_paths
 

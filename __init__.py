@@ -11,7 +11,7 @@ import folder_paths
 
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(ROOT_DIR)
-sys.path.append( f"{ROOT_DIR}/StableAnimator")
+sys.path.append(f"{ROOT_DIR}/StableAnimator")
 
 from StableAnimator.animation.modules.attention_processor import AnimationAttnProcessor
 from StableAnimator.animation.modules.attention_processor_normalized import AnimationIDAttnNormalizedProcessor
@@ -22,7 +22,7 @@ from StableAnimator.animation.modules.pose_net import PoseNet
 from StableAnimator.animation.modules.unet import UNetSpatioTemporalConditionModel
 from StableAnimator.animation.pipelines.inference_pipeline_animation import InferenceAnimationPipeline
 
-from .utils.image_utils import tensor_to_pil, tensor_to_np, np_to_tensor, load_images_from_folder
+from .utils.image_utils import tensor_to_pil, tensor_to_np, np_to_tensor, load_images_from_folder, Resize
 
 
 # from .StableAnimator.DWPose.dwpose_utils.dwpose_detector import dwpose_detector_aligned
@@ -181,7 +181,6 @@ class StableAnimatorModels:
             raise ValueError(f"Invalid model weights: {path}")
 
 
-
 class StableAnimatorNode:
     """
     StableAnimator视频生成节点
@@ -202,8 +201,8 @@ class StableAnimatorNode:
                 "pose_images": ("IMAGE",),
                 "format":(["512x512","576x1024"],{}),
                 "tile_size":("INT",{"default":16,"min":16,"max":64,"step":16}),
-                "frames_overlap":("INT",{"default":4,"min":4,"max":64,"step":4}),
-                "decode_chunk_size":("INT",{"default":4,"min":4,"max":64,"step":4}),
+                "frames_overlap":("INT",{"default":4,"min":1,"max":64,"step":1}),
+                "decode_chunk_size":("INT",{"default":4,"min":1,"max":64,"step":1}),
                 "num_inference_steps":("INT",{"default":25,"min":1,"max":64,"step":1}),
                 "noise_aug_strength": ("FLOAT", {
                     "default": 0.02,
@@ -259,7 +258,9 @@ class StableAnimatorNode:
         tensor_pose_images = kwargs["pose_images"]
         pose_images = []
         for pose_image in tensor_pose_images:
-            pose_images.append(tensor_to_pil(pose_image.unsqueeze(0)).resize((width,height)))
+            _img = pose_image.unsqueeze(0)
+            _img = Resize.crop_center(_img, width, height)
+            pose_images.append(tensor_to_pil(_img))
         
         seed = kwargs["seed"] if kwargs["seed"] != -1 else torch.randint(0, 2**32-1, (1,)).item()
         generator = torch.Generator(device=self.device).manual_seed(seed)
@@ -391,6 +392,7 @@ class StableAnimatorSkeletonNode:
         detected_poses = []
         for video_frame in video_frames:
             frame = tensor_to_np(video_frame.unsqueeze(0))
+            frame = Resize.crop_center(frame, width, height)
             pose = dwpose_detector_aligned(frame)
             detected_poses.append(pose)
         
