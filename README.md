@@ -10,8 +10,7 @@ Visit the original project at https://github.com/Francis-Rings/StableAnimator.
 2. A node for exporting bone maps from video frames of StableAnimator has been created. You can also use the DWPose Estimator of comfyui_controlnet_aux to generate bone maps.
 3. A node for reading bone maps from a directory has been created.
 4. The nodes can now be used normally.
-5. A StableAnimator directory is preset in the root directory, and an `__init__.py` file has been added. **Do not remove it** to ensure the correct reference of sub-packages.
-6. Workflow examples will be provided later...
+5. Workflow examples will be provided later...
 
 ## Suggestions
 1. It is recommended to use ComfyUI - VideoHelperSuite to export video frames and synthesize videos. Refer to: https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.
