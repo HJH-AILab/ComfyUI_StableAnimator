@@ -9,7 +9,11 @@ StableAnimator 的 ComfyUI 自定义节点.
 2. 制作了StableAnimator的从视频帧导出骨骼图节点, 你也可以使用comfyui_controlnet_aux的DWPose Estimator来生成骨骼图
 3. 制作了从目录读取骨骼图的节点.
 4. 现在节点已经可以正常使用了.
-5. 工作流示例稍后提供...
+
+## Workflow
+工作流文件在<a href="workflow/stable_animator_sample.json">这里</a>
+<br>
+<img src="workflow/sample.jpg" alt="a workflow sample" width="100%">
 
 ## 建议
 1. 建议使用ComfyUI-VideoHelperSuite来导出是视频帧和合成视频, 参考:https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
