@@ -13,6 +13,7 @@ Visit the original project at https://github.com/Francis-Rings/StableAnimator.
 
 ## Workflow
 the workflow json at <a href="workflow/stable_animator_sample.json">here</a>
+<br>
 <img src="workflow/sample.jpg" alt="a workflow sample" width="100%">
 
 ## Suggestions
