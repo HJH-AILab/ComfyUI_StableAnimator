@@ -12,9 +12,9 @@ Visit the original project at https://github.com/Francis-Rings/StableAnimator.
 4. The nodes can now be used normally.
 
 ## Workflow
-the workflow json at <a href="workflow/stable_animator_sample.json">here</a>
+the workflow json at <a href="workflow/stable_animator_example.json">here</a>
 <br>
-<img src="workflow/sample.jpg" alt="a workflow sample" width="100%">
+<img src="workflow/example.jpg" alt="a workflow example" width="100%">
 
 ## Suggestions
 1. It is recommended to use ComfyUI - VideoHelperSuite to export video frames and synthesize videos. Refer to: https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.
